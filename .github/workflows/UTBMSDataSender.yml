@@ -1,0 +1,17 @@
+name: UT_BMSDataSender
+
+on: [push,pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: UnitTest
+      run: gcc -Wall -Wextra  -o UTBMSDataSender ./Sender/tst/UT/BMSDataSender/*.c
+      
+    - name: run
+      run: ./UTBMSDataSender
