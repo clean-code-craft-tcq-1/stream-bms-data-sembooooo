@@ -47,7 +47,15 @@ int print_Mocks_ForFileIterationInstance(char *Par_s, double temp,double charger
     return 0;
 }
 
-
+int print_Mocks_ForNtransmissionsScenario(char *Par_s, double temp,double chargerate)
+{
+    call_Printf++;
+    
+    if((call_Printf == numberofcallsToRequestStop)&& (numberofcallsToRequestStop!= 0))
+    {
+        RequestToStopDataTransmission();
+    }
+}
 void Reset_all_print_mocks(void)
 {
     int index = 0;

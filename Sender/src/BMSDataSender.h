@@ -13,6 +13,8 @@ typedef enum{
 
 typedef struct {
     int isTxStopRequested;
+    int isStopAfterNTransmissionRequested;
+    int NumberofTransmissionAllowed;
 }BMSDataTxControl_t;
 
 typedef struct {

@@ -28,13 +28,16 @@
 static void Environment_Initialization(void)
 {
     BMSDataTransmitter.TxControl.isTxStopRequested =0;
+    BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested =0;
+    BMSDataTransmitter.TxControl.NumberofTransmissionAllowed =0;
     print = &printf;
     Reset_all_print_mocks();
     strcpy(filename,"data.txt");
 }
 
 /**
- * If file is not found then the sender function shall exit
+ * Sender will read the data from a file and transmit the data onto console.
+ * If the file is not found then the sender process shall exit.
  */ 
 
 static void TC_ProcessShouldExitIfFileNotFound(void)
@@ -48,17 +51,17 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
 
 
 /**
- * The parameters are stored in the order following order in the file temparature
- *      temparatre chargerate
- *      temparatre chargerate 
- *      temparatre chargerate
+ * The data is stored in the following order in the file
+ *      temparature_1 chargerate_1
+ *      temparature_2 chargerate_2
+ *      temparature_3 chargerate_3
  *          ....
  *          ....
  * 
- * So the parameters should also get printed in the same order on console
- *      temparatre chargerate
- *      temparatre chargerate 
- *      temparatre chargerate
+ * The data should also get printed in the same order on console
+ *      temparature_1 chargerate_1
+ *      temparature_2 chargerate_2
+ *      temparature_3 chargerate_3
  *          ....
  *          ....
  */ 
@@ -73,16 +76,17 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 }
 
 /**
- * While fetching the values from data.txt file , ifEnd of the file is reached then the
+ * While fetching the values from ./data.txt file ,if End of the file is reached then the
  * reading should again start from the top of the file.
- * This allows us to send data continously until user stops
+ * This allows us to send data on to console continously until user stops.
+ * Temparature and chargerate are read together in a single read.
  * 
  * The data.txt file in this unittest is written in the following way
  * 1.0 2.0
  * 3.0 4.0
  * 5.0 6.0
  * 
- * So after 4th read again 1.0 and 2.0 should be passed on to console (printf)
+ * So after 3rd read again 1.0 and 2.0 should be passed on to console (printf)
  *
  */ 
 static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
@@ -113,6 +117,45 @@ static void TC_EvaluateIfPrintfIsAssigned(void)
 }
 
 
+/**
+ * We can also limit the number of transmission on to console
+ * set BMSDataTxControl_t.NumberofTransmissionAllowed 
+ * But to enable this feature one needs set 
+ * BMSDataTxControl_t.isStopAfterNTransmissionRequested
+ * 
+ * This testcase evaluates if the transmission stops are defined number.
+ */ 
+static void TC_EvaluateIfTransmissionStopsAfterN(void)
+{
+    printf("TC_EvaluateIfTransmissionStopsAfterN\n");
+    BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
+    BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1000;
+    print = &print_Mocks_ForNtransmissionsScenario;
+    BatteryMonitoringSystemTransmitter_Main();
+    assert(call_Printf == 1000);   
+}
+
+
+/**
+ * We can also limit the number of transmission on to console
+ * set BMSDataTxControl_t.NumberofTransmissionAllowed 
+ * But to enable this feature one needs set 
+ * BMSDataTxControl_t.isStopAfterNTransmissionRequested
+ * 
+ * This testcase evaluates if the transmission doesnt stop after defined transmissions
+ */ 
+static void TC_EvaluateIfTransmissionDoesntStopAfterN(void)
+{
+    printf("TC_EvaluateIfTransmissionDoesntStopAfterN\n");
+    BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 0;
+    BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1000;
+    numberofcallsToRequestStop = 2000;
+    print = &print_Mocks_ForNtransmissionsScenario;
+    BatteryMonitoringSystemTransmitter_Main();
+    assert(call_Printf == 2000);   
+}
+
+
 int main()
 {
 printf("*************************************\n");
@@ -126,6 +169,10 @@ Environment_Initialization();
 TC_EvaluateParametersOrderPrintedOnConsole(); 
 Environment_Initialization(); 
 TC_EvaluateIfFilereadingisIteratedatEOF(); 
+Environment_Initialization(); 
+TC_EvaluateIfTransmissionStopsAfterN();
+Environment_Initialization(); 
+TC_EvaluateIfTransmissionDoesntStopAfterN();
 printf("*************************************\n");
 printf("****Test Execution Ended*************\n");
 printf("*************************************\n");

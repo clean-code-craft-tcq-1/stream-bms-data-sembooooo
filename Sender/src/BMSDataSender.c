@@ -7,6 +7,7 @@ int (*print)(const char *format, ...) = &printf;
 char filename[10] = "data.txt";
 
 
+
 void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
 {
     float ParameterData[BatteryParameter_TotalNumber];
@@ -26,14 +27,23 @@ void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
             else
             {
                 print("%f %f\n",ParameterData[BatteryParameter_Temparature],ParameterData[BatteryParameter_ChargeRate]);
+                if(TxControlPtr->isStopAfterNTransmissionRequested == 1)   
+                {
+                    TxControlPtr->NumberofTransmissionAllowed--;
+                    if(TxControlPtr->NumberofTransmissionAllowed == 0)
+                    {
+                        TxControlPtr->isTxStopRequested = 1;
+                    }
+                }
             }
+
     }
     fclose(fptr);
 
 }
 
 BMSDataTransmitter_t BMSDataTransmitter ={
-                                        {0},
+                                            {0,0,0},
                                         &TransmitDataFromFileToConsole};
 
 void BatteryMonitoringSystemTransmitter_Main(void)
@@ -52,6 +62,12 @@ void RequestToStopDataTransmission(void)
  */ 
 int main()
 {
+    /**
+     *  As we cannot run the process forever in github actions i have restricted to 1000 data transmissions
+     *  For infinite transmissions set BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 0;
+     **/
+    BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
+    BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 10000;
     BatteryMonitoringSystemTransmitter_Main();
 }
 #endif
