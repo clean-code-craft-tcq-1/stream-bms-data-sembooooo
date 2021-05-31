@@ -119,9 +119,8 @@ static void TC_EvaluateIfPrintfIsAssigned(void)
 
 /**
  * We can also limit the number of transmission on to console
- * set BMSDataTxControl_t.NumberofTransmissionAllowed 
- * But to enable this feature one needs set 
- * BMSDataTxControl_t.isStopAfterNTransmissionRequested
+ * set BMSDataTxControl_t.NumberofTransmissionAllowed to desired number of transmissions
+ * But to enable this feature one needs to set BMSDataTxControl_t.isStopAfterNTransmissionRequested to 1
  * 
  * This testcase evaluates if the transmission stops are defined number.
  */ 
@@ -137,12 +136,10 @@ static void TC_EvaluateIfTransmissionStopsAfterN(void)
 
 
 /**
- * We can also limit the number of transmission on to console
- * set BMSDataTxControl_t.NumberofTransmissionAllowed 
- * But to enable this feature one needs set 
- * BMSDataTxControl_t.isStopAfterNTransmissionRequested
- * 
  * This testcase evaluates if the transmission doesnt stop after defined transmissions
+ * We set BMSDataTxControl_t.isStopAfterNTransmissionRequested = 0
+ * but BMSDataTxControl_t.NumberofTransmissionAllowed = 1000 
+ * The transmission shall continue after 1000th transmission
  */ 
 static void TC_EvaluateIfTransmissionDoesntStopAfterN(void)
 {
@@ -152,6 +149,7 @@ static void TC_EvaluateIfTransmissionDoesntStopAfterN(void)
     numberofcallsToRequestStop = 2000;
     print = &print_Mocks_ForNtransmissionsScenario;
     BatteryMonitoringSystemTransmitter_Main();
+    assert(call_Printf > 1000);
     assert(call_Printf == 2000);   
 }
 
