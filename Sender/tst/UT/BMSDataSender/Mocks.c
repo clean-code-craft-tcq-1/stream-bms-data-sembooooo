@@ -6,8 +6,8 @@
 
 char Printf_FormartString[100];
 int call_Printf;
-float printf_floatpar_data[2];
-float printf_floatpar_AlldataSamples[4][2];
+double printf_floatpar_data[2];
+double printf_floatpar_AlldataSamples[4][2];
 int numberofcallsToRequestStop;
 
 int print_Mock_FilenotfoundInstance(char *Par_s)
@@ -28,8 +28,8 @@ int print_Mock_ForDataEvaluation(char *Par_s,...)
     call_Printf++;
 
     strcpy(Printf_FormartString,Par_s);
-    printf_floatpar_data[0] =(float)temp;
-    printf_floatpar_data[1] =(float)chargerate;
+    printf_floatpar_data[0] =temp;
+    printf_floatpar_data[1] =chargerate;
     RequestToStopDataTransmission();
     return 0;
 }
@@ -39,15 +39,15 @@ int print_Mocks_ForFileIterationInstance(char *Par_s, double temp,double charger
     static int index =0;
     call_Printf++;
     strcpy(Printf_FormartString,Par_s);
-    printf_floatpar_AlldataSamples[index][0] =(float) temp;
-    printf_floatpar_AlldataSamples[index][1] =(float) chargerate;
+    printf_floatpar_AlldataSamples[index][0] = temp;
+    printf_floatpar_AlldataSamples[index][1] = chargerate;
     index ++;
     if(call_Printf == numberofcallsToRequestStop)
         RequestToStopDataTransmission();
     return 0;
 }
 
-int print_Mocks_ForNtransmissionsScenario(char *Par_s, double temp,double chargerate)
+int print_Mocks_ForNtransmissionsScenario(char *Par_s,...)
 {
     call_Printf++;
     
@@ -55,6 +55,7 @@ int print_Mocks_ForNtransmissionsScenario(char *Par_s, double temp,double charge
     {
         RequestToStopDataTransmission();
     }
+    return 0;
 }
 void Reset_all_print_mocks(void)
 {
