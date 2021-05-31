@@ -10,4 +10,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build
-      run: gcc -DMAIN -Wall -Wextra *.c
+      run: gcc -DMAIN -Wall -Wextra ./Sender/src/*.c

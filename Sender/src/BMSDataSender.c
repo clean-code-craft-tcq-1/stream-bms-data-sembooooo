@@ -7,7 +7,6 @@ int (*print)(const char *format, ...) = &printf;
 
 void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
 {
-    int fscanf_ret;
     float ParameterData[BatteryParameter_TotalNumber];
     int param;
     FILE *fptr = fopen(DATASAMPLES_FILENAME,"r");      

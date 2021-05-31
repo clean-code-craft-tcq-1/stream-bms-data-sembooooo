@@ -11,6 +11,7 @@ int numberofcallsToRequestStop;
 int print_Mock_FilenotfoundInstance(char *Par_s)
 {
     strcpy(Printf_FormartString,Par_s);
+    return 0;
 }
 
 int print_Mock_ForDataEvaluation(char *Par_s,float temp,float chargerate)
@@ -20,6 +21,7 @@ int print_Mock_ForDataEvaluation(char *Par_s,float temp,float chargerate)
     printf_floatpar_data[0] =temp;
     printf_floatpar_data[1] =chargerate;
     RequestToStopDataTransmission();
+    return 0;
 }
 
 int print_Mocks_ForFileIterationInstance(char *Par_s,float temp,float chargerate)
@@ -32,6 +34,7 @@ int print_Mocks_ForFileIterationInstance(char *Par_s,float temp,float chargerate
     index ++;
     if(call_Printf == numberofcallsToRequestStop)
         RequestToStopDataTransmission();
+    return 0;
 }
 
 

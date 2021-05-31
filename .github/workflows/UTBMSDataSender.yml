@@ -1,4 +1,4 @@
-name: TEST WITH MOCKS(Build and Run)
+name: UTBMSDataSender
 
 on: [push,pull_request]
 

@@ -36,7 +36,7 @@ static void Environment_Initialization(void)
  * If file is not found then the sender function shall exit
  */ 
 
-static TC_ProcessShouldExitIfFileNotFound(void)
+static void TC_ProcessShouldExitIfFileNotFound(void)
 {
     #undef DATASAMPLES_FILENAME
     #define DATASAMPLES_FILENAME "dat.txt"
@@ -61,13 +61,13 @@ static TC_ProcessShouldExitIfFileNotFound(void)
  *          ....
  *          ....
  */ 
-static TC_EvaluateParametersOrderPrintedOnConsole(void)
+static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
     print = print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
-    assert(printf_floatpar_data[BatteryParameter_Temparature] = 1.0);
-    assert(printf_floatpar_data[BatteryParameter_ChargeRate] = 2.0);
+    assert(printf_floatpar_data[BatteryParameter_Temparature] == 1.0);
+    assert(printf_floatpar_data[BatteryParameter_ChargeRate] == 2.0);
 }
 
 /**
@@ -83,7 +83,7 @@ static TC_EvaluateParametersOrderPrintedOnConsole(void)
  * So after 4th read again 1.0 and 2.0 should be passed on to console (printf)
  *
  */ 
-static TC_EvaluateIfFilereadingisIteratedatEOF(void)
+static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
 {
     int index;
     float datasamples[4][2] ={ {1.0,2.0},
@@ -103,7 +103,7 @@ static TC_EvaluateIfFilereadingisIteratedatEOF(void)
 /**
  * To Evaluate if the testdouble is assigned properly with printf or not
  */ 
-static TC_EvaluateIfPrintfIsAssigned(void)
+static void TC_EvaluateIfPrintfIsAssigned(void)
 {
     assert(print == &printf);
 }
@@ -111,15 +111,13 @@ static TC_EvaluateIfPrintfIsAssigned(void)
 
 int main()
 {
-    Environment_Initialization(); 
-    TC_ProcessShouldExitIfFileNotFound(); 
-    Environment_Initialization(); 
-    TC_EvaluateParametersOrderPrintedOnConsole();
-    Environment_Initialization(); 
-    TC_EvaluateParametersOrderPrintedOnConsole();
-    Environment_Initialization();
-    TC_EvaluateIfPrintfIsAssigned();
-    return 0;
+Environment_Initialization(); 
+TC_ProcessShouldExitIfFileNotFound(); 
+Environment_Initialization(); 
+TC_EvaluateParametersOrderPrintedOnConsole(); 
+Environment_Initialization(); 
+TC_EvaluateIfFilereadingisIteratedatEOF(); 
+Environment_Initialization(); 
+TC_EvaluateIfPrintfIsAssigned();
+return 0;
 }
-
-
