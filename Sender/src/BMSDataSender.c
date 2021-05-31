@@ -4,21 +4,22 @@
 
 ///> Test double
 int (*print)(const char *format, ...) = &printf;
+char filename[10] = "data.txt";
+
 
 void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
 {
     float ParameterData[BatteryParameter_TotalNumber];
-    int param;
-    FILE *fptr = fopen(DATASAMPLES_FILENAME,"r");      
+    FILE *fptr = fopen(filename,"r");   
     if(fptr == NULL)
     {
-        print("Problem with File opening\n");
-        return;
+        print("Problem with File opening\n");   
+        return; 
     }
     while(TxControlPtr->isTxStopRequested == 0)
     {
             if(fscanf(fptr,"%f %f",&ParameterData[BatteryParameter_Temparature],
-                                   &ParameterData[BatteryParameter_ChargeRate] ) == EOF)
+                                &ParameterData[BatteryParameter_ChargeRate] ) == EOF)
             {
                 rewind(fptr);
             }
@@ -28,6 +29,7 @@ void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
             }
     }
     fclose(fptr);
+
 }
 
 BMSDataTransmitter_t BMSDataTransmitter ={

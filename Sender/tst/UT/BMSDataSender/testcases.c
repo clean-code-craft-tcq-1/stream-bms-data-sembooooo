@@ -30,6 +30,7 @@ static void Environment_Initialization(void)
     BMSDataTransmitter.TxControl.isTxStopRequested =0;
     print = &printf;
     Reset_all_print_mocks();
+    strcpy(filename,"data.txt");
 }
 
 /**
@@ -38,9 +39,9 @@ static void Environment_Initialization(void)
 
 static void TC_ProcessShouldExitIfFileNotFound(void)
 {
-    #undef DATASAMPLES_FILENAME
-    #define DATASAMPLES_FILENAME "dat.txt"
-    print = Printf_FormartString;
+    strcpy(filename,"dat.txt");
+    printf("TC_ProcessShouldExitIfFileNotFound\n");
+    print = &print_Mock_FilenotfoundInstance;
     BatteryMonitoringSystemTransmitter_Main();
     assert(strcmp("Problem with File opening\n",Printf_FormartString)==0);
 }
@@ -63,7 +64,8 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
  */ 
 static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
-    print = print_Mock_ForDataEvaluation;
+    printf("TC_EvaluateParametersOrderPrintedOnConsole\n");
+    print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
     assert(printf_floatpar_data[BatteryParameter_Temparature] == 1.0);
@@ -85,12 +87,13 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
  */ 
 static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
 {
+    printf("TC_EvaluateIfFilereadingisIteratedatEOF\n");
     int index;
     float datasamples[4][2] ={ {1.0,2.0},
                                 {3.0,4.0},
                                 {5.0,6.0},
                                 {1.0,2.0}};
-    print = print_Mocks_ForFileIterationInstance;
+    print = &print_Mocks_ForFileIterationInstance;
     numberofcallsToRequestStop = 4;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 4);
@@ -105,19 +108,26 @@ static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
  */ 
 static void TC_EvaluateIfPrintfIsAssigned(void)
 {
+    printf("TC_EvaluateIfPrintfIsAssigned\n");
     assert(print == &printf);
 }
 
 
 int main()
 {
+printf("*************************************\n");
+printf("****Test Execution Started***********\n");
+printf("*************************************\n");
 Environment_Initialization(); 
 TC_ProcessShouldExitIfFileNotFound(); 
+Environment_Initialization(); 
+TC_EvaluateIfPrintfIsAssigned();
 Environment_Initialization(); 
 TC_EvaluateParametersOrderPrintedOnConsole(); 
 Environment_Initialization(); 
 TC_EvaluateIfFilereadingisIteratedatEOF(); 
-Environment_Initialization(); 
-TC_EvaluateIfPrintfIsAssigned();
+printf("*************************************\n");
+printf("****Test Execution Ended*************\n");
+printf("*************************************\n");
 return 0;
 }

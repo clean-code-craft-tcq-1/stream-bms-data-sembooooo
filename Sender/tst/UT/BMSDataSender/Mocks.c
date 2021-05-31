@@ -1,4 +1,6 @@
 #include "../../../src/BMSDataSender.h"
+#include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 #include "Mocks.h"
 
@@ -14,23 +16,31 @@ int print_Mock_FilenotfoundInstance(char *Par_s)
     return 0;
 }
 
-int print_Mock_ForDataEvaluation(char *Par_s,float temp,float chargerate)
+// Lesson learnt : float gets coverted into double when passed through va_args
+int print_Mock_ForDataEvaluation(char *Par_s,...)
 {
+    double temp, chargerate;
+    va_list ap;
+    va_start(ap,Par_s);
+    temp =va_arg(ap,double);
+    chargerate =va_arg(ap,double);
+    va_end(ap);
     call_Printf++;
+
     strcpy(Printf_FormartString,Par_s);
-    printf_floatpar_data[0] =temp;
-    printf_floatpar_data[1] =chargerate;
+    printf_floatpar_data[0] =(float)temp;
+    printf_floatpar_data[1] =(float)chargerate;
     RequestToStopDataTransmission();
     return 0;
 }
 
-int print_Mocks_ForFileIterationInstance(char *Par_s,float temp,float chargerate)
+int print_Mocks_ForFileIterationInstance(char *Par_s, double temp,double chargerate)
 {
     static int index =0;
     call_Printf++;
     strcpy(Printf_FormartString,Par_s);
-    printf_floatpar_AlldataSamples[index][0] =temp;
-    printf_floatpar_AlldataSamples[index][1] =chargerate;
+    printf_floatpar_AlldataSamples[index][0] =(float) temp;
+    printf_floatpar_AlldataSamples[index][1] =(float) chargerate;
     index ++;
     if(call_Printf == numberofcallsToRequestStop)
         RequestToStopDataTransmission();
