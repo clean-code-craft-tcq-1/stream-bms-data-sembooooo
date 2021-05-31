@@ -8,6 +8,18 @@ char filename[10] = "data.txt";
 
 
 
+void CalculateIsTxStopRequested(BMSDataTxControl_t * TxControlPtr)
+{
+    if(TxControlPtr->isStopAfterNTransmissionRequested == 1)   
+    {
+        TxControlPtr->NumberofTransmissionAllowed--;
+        if(TxControlPtr->NumberofTransmissionAllowed == 0)
+        {
+            TxControlPtr->isTxStopRequested = 1;
+        }
+    }  
+}
+
 void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
 {
     float ParameterData[BatteryParameter_TotalNumber];
@@ -27,14 +39,7 @@ void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
             else
             {
                 print("%f %f\n",ParameterData[BatteryParameter_Temparature],ParameterData[BatteryParameter_ChargeRate]);
-                if(TxControlPtr->isStopAfterNTransmissionRequested == 1)   
-                {
-                    TxControlPtr->NumberofTransmissionAllowed--;
-                    if(TxControlPtr->NumberofTransmissionAllowed == 0)
-                    {
-                        TxControlPtr->isTxStopRequested = 1;
-                    }
-                }
+               CalculateIsTxStopRequested(TxControlPtr);
             }
 
     }
@@ -48,6 +53,11 @@ BMSDataTransmitter_t BMSDataTransmitter ={
 
 void BatteryMonitoringSystemTransmitter_Main(void)
 {
+    int assertcondition = 0;
+    if(BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested == 1) 
+    {
+        assert(BMSDataTransmitter.TxControl.NumberofTransmissionAllowed > 0);
+    }        
    BMSDataTransmitter.TrasmitData(&BMSDataTransmitter.TxControl);
 }
 

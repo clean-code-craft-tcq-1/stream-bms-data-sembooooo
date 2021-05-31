@@ -165,7 +165,7 @@ TC_ProcessShouldExitIfFileNotFound();
 Environment_Initialization(); 
 TC_EvaluateIfPrintfIsAssigned();
 Environment_Initialization(); 
-//TC_EvaluateParametersOrderPrintedOnConsole(); 
+TC_EvaluateParametersOrderPrintedOnConsole(); 
 Environment_Initialization(); 
 TC_EvaluateIfFilereadingisIteratedatEOF(); 
 Environment_Initialization(); 
