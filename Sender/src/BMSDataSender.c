@@ -3,66 +3,47 @@
 #include <assert.h>
 #include "BMSDataSender.h"
 
-#define NUMBER_OF_DATA_PER_PARAMETER    7
-const float Paramter_data[BatteryParameter_TotalNumber][7] = {
-                                                        {10.0, 12.0, 13.1, 14.2, 15.3, 16.4, 17.5},
-                                                        {0.1,0.25,0.34,0.45,0.54,0.63,0.57}
-                                                        };
-
-static const char * ParmaeterToStr[BatteryParameter_TotalNumber] = {"Temparature","ChargeRate"};
-
 ///> Test double
 int (*print)(const char *format, ...) = &printf;
 
-
-void FetchDataFromarray(ParameterBuffer_t * ParameterBuffer)
+void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
 {
-    assert(ParameterBuffer != NULL);
-    unsigned int parameter = 0;
-    for (parameter = 0; parameter < BatteryParameter_TotalNumber ; parameter++, ParameterBuffer++)
+    int fscanf_ret;
+    float ParameterData[BatteryParameter_TotalNumber];
+    int param;
+    FILE *fptr = fopen(DATASAMPLES_FILENAME,"r");      
+    if(fptr == NULL)
     {
-        ParameterBuffer->pbuf = (float *)&Paramter_data[parameter][0];
-        ParameterBuffer->size = NUMBER_OF_DATA_PER_PARAMETER;
-    }    
-}
-
-
-void TransmitDataOntoConsole(ParameterBuffer_t * ParameterBuffer)
-{
-    unsigned int parameter = 0;
-    unsigned int index = 0;
-    assert(ParameterBuffer != NULL);   
-    for (parameter = 0; parameter < BatteryParameter_TotalNumber ; parameter++)
+        print("Problem with File opening\n");
+        return;
+    }
+    while(TxControlPtr->isTxStopRequested == 0)
     {
-        print("%s\n",ParmaeterToStr[parameter]);
-        print("%d\n",ParameterBuffer->size);
-        for(index =0; index < ParameterBuffer->size ; index++)
-        {
-            print("%f\n",ParameterBuffer->pbuf[index]);
-        }
-        ParameterBuffer++;    
-    }    
+            if(fscanf(fptr,"%f %f",&ParameterData[BatteryParameter_Temparature],
+                                   &ParameterData[BatteryParameter_ChargeRate] ) == EOF)
+            {
+                rewind(fptr);
+            }
+            else
+            {
+                print("%f %f\n",ParameterData[BatteryParameter_Temparature],ParameterData[BatteryParameter_ChargeRate]);
+            }
+    }
 }
 
-
-
-static  BatteryMonitoringSystemTransmitter_t    BatteryMonitoringSystemTransmitter;
-
-
-void initializeBMSTransmitter(void)
-{
-    BatteryMonitoringSystemTransmitter.Fetchparameterdata = &FetchDataFromarray;
-    BatteryMonitoringSystemTransmitter.TransmitParameterData = &TransmitDataOntoConsole;
-}
-
+BMSDataTransmitter_t BMSDataTransmitter ={
+                                        {0},
+                                        &TransmitDataFromFileToConsole};
 
 void BatteryMonitoringSystemTransmitter_Main(void)
 {
-    initializeBMSTransmitter();
-    BatteryMonitoringSystemTransmitter.Fetchparameterdata(&BatteryMonitoringSystemTransmitter.ParameterBuffer[0]);
-    BatteryMonitoringSystemTransmitter.TransmitParameterData(&BatteryMonitoringSystemTransmitter.ParameterBuffer[0]);
+   BMSDataTransmitter.TrasmitData(&BMSDataTransmitter.TxControl);
 }
 
+void RequestToStopDataTransmission(void)
+{   
+    BMSDataTransmitter.TxControl.isTxStopRequested = 1;
+}
 
 #ifdef MAIN
 /**

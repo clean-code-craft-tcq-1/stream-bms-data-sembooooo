@@ -1,10 +1,26 @@
 #pragma once
-#include "ParameterBuffer.h"
+
+#define DATASAMPLES_FILENAME    "data.txt"
+
+
+typedef enum{
+    BatteryParameter_Temparature,
+    BatteryParameter_ChargeRate,
+    BatteryParameter_TotalNumber
+} BatteryParameter_t;
+
 
 typedef struct {
-    ParameterBuffer_t ParameterBuffer[BatteryParameter_TotalNumber];
-    void (*Fetchparameterdata)(ParameterBuffer_t * ParameterBuffer);
-    void (*TransmitParameterData)(ParameterBuffer_t * ParameterBuffer);
-}BatteryMonitoringSystemTransmitter_t;
+    int isTxStopRequested;
+}BMSDataTxControl_t;
+
+typedef struct {
+    BMSDataTxControl_t TxControl;
+    void (*TrasmitData)(BMSDataTxControl_t *TxControl);
+}BMSDataTransmitter_t;
+
+/* Designed For testing purposes */
+extern void RequestToStopDataTransmission(void);
+
 
 

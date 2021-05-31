@@ -58,7 +58,7 @@ def compile_ut_using_gcc(foldername):
     except FileNotFoundError:
         pass
 
-    gcc_command = "gcc ./"+foldername+"/"+mainfile_name+ " -o ./TestcaseExecuter"
+    gcc_command = "gcc ./"+foldername+"/*.c"+ " -o ./TestcaseExecuter"
     if os.system(gcc_command) != 0:
         print("Exiting because of compilation errors")
         exit()
