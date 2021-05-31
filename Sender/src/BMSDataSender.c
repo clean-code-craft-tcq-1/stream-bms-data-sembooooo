@@ -69,5 +69,6 @@ int main()
     BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 10000;
     BatteryMonitoringSystemTransmitter_Main();
+    return 0;
 }
 #endif
