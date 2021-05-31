@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BMSDATASENDER_H__
+#define BMSDATASENDER_H__
 
 #define DATASAMPLES_FILENAME    "data.txt"
 
@@ -22,5 +23,5 @@ typedef struct {
 /* Designed For testing purposes */
 extern void RequestToStopDataTransmission(void);
 
-
+#endif  /*BMSDATASENDER_H__*/
 

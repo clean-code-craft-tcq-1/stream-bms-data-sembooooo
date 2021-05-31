@@ -28,6 +28,8 @@
 static void Environment_Initialization(void)
 {
     BMSDataTransmitter.TxControl.isTxStopRequested =0;
+    print = &printf;
+    Reset_all_print_mocks();
 }
 
 /**
@@ -59,7 +61,7 @@ static TC_ProcessShouldExitIfFileNotFound(void)
  *          ....
  *          ....
  */ 
-static EvaluateParametersOrderPrintedOnConsole(void)
+static TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
     print = print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
@@ -67,3 +69,57 @@ static EvaluateParametersOrderPrintedOnConsole(void)
     assert(printf_floatpar_data[BatteryParameter_Temparature] = 1.0);
     assert(printf_floatpar_data[BatteryParameter_ChargeRate] = 2.0);
 }
+
+/**
+ * While fetching the values from data.txt file , ifEnd of the file is reached then the
+ * reading should again start from the top of the file.
+ * This allows us to send data continously until user stops
+ * 
+ * The data.txt file in this unittest is written in the following way
+ * 1.0 2.0
+ * 3.0 4.0
+ * 5.0 6.0
+ * 
+ * So after 4th read again 1.0 and 2.0 should be passed on to console (printf)
+ *
+ */ 
+static TC_EvaluateIfFilereadingisIteratedatEOF(void)
+{
+    int index;
+    float datasamples[4][2] ={ {1.0,2.0},
+                                {3.0,4.0},
+                                {5.0,6.0},
+                                {1.0,2.0}};
+    print = print_Mocks_ForFileIterationInstance;
+    numberofcallsToRequestStop = 4;
+    BatteryMonitoringSystemTransmitter_Main();
+    assert(call_Printf == 4);
+    for (index = 0; index <4 ; index ++)
+    {
+        assert(printf_floatpar_AlldataSamples[index][0] ==datasamples[index][0]);
+        assert(printf_floatpar_AlldataSamples[index][1] ==datasamples[index][1]);
+    }
+}
+/**
+ * To Evaluate if the testdouble is assigned properly with printf or not
+ */ 
+static TC_EvaluateIfPrintfIsAssigned(void)
+{
+    assert(print == &printf);
+}
+
+
+int main()
+{
+    Environment_Initialization(); 
+    TC_ProcessShouldExitIfFileNotFound(); 
+    Environment_Initialization(); 
+    TC_EvaluateParametersOrderPrintedOnConsole();
+    Environment_Initialization(); 
+    TC_EvaluateParametersOrderPrintedOnConsole();
+    Environment_Initialization();
+    TC_EvaluateIfPrintfIsAssigned();
+    return 0;
+}
+
+

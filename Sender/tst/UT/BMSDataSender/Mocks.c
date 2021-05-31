@@ -1,8 +1,12 @@
 #include "../../../src/BMSDataSender.h"
+#include <string.h>
+#include "Mocks.h"
 
 char Printf_FormartString[100];
 int call_Printf;
 float printf_floatpar_data[2];
+float printf_floatpar_AlldataSamples[4][2];
+int numberofcallsToRequestStop;
 
 int print_Mock_FilenotfoundInstance(char *Par_s)
 {
@@ -16,4 +20,36 @@ int print_Mock_ForDataEvaluation(char *Par_s,float temp,float chargerate)
     printf_floatpar_data[0] =temp;
     printf_floatpar_data[1] =chargerate;
     RequestToStopDataTransmission();
+}
+
+int print_Mocks_ForFileIterationInstance(char *Par_s,float temp,float chargerate)
+{
+    static int index =0;
+    call_Printf++;
+    strcpy(Printf_FormartString,Par_s);
+    printf_floatpar_AlldataSamples[index][0] =temp;
+    printf_floatpar_AlldataSamples[index][1] =chargerate;
+    index ++;
+    if(call_Printf == numberofcallsToRequestStop)
+        RequestToStopDataTransmission();
+}
+
+
+void Reset_all_print_mocks(void)
+{
+    int index = 0;
+    
+    memset(Printf_FormartString,0,100);
+    
+    call_Printf = 0;
+    
+    printf_floatpar_data[0] = 0.0;
+    printf_floatpar_data[1] = 0.0;
+
+    for(index =0; index <4 ; index++)
+    {
+        printf_floatpar_AlldataSamples[index][0] = 0.0;
+        printf_floatpar_AlldataSamples[index][1] = 0.0;
+    }
+    numberofcallsToRequestStop = 0;
 }

@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <assert.h>
 #include "BMSDataSender.h"
@@ -29,6 +28,7 @@ void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
                 print("%f %f\n",ParameterData[BatteryParameter_Temparature],ParameterData[BatteryParameter_ChargeRate]);
             }
     }
+    fclose(fptr);
 }
 
 BMSDataTransmitter_t BMSDataTransmitter ={
