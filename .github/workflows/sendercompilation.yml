@@ -11,5 +11,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: build
       run: gcc -DMAIN -Wall -Wextra -o executer ./Sender/src/*.c
-    - name: execute
-      run: executer
+    - name: run
+      run: ./executer
