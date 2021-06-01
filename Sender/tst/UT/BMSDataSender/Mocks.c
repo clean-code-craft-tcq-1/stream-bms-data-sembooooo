@@ -6,7 +6,7 @@
 
 char Printf_FormartString[100];
 int call_Printf;
-double printf_floatpar_data[2];
+float printf_floatpar_data[2];
 double printf_floatpar_AlldataSamples[4][2];
 int numberofcallsToRequestStop;
 
@@ -19,11 +19,11 @@ int print_Mock_FilenotfoundInstance(char *Par_s)
 // Lesson learnt : float gets coverted into double when passed through va_args
 int print_Mock_ForDataEvaluation(char *Par_s,...)
 {
-    double temp, chargerate;
+    float temp, chargerate;
     va_list ap;
     va_start(ap,Par_s);
-    temp =va_arg(ap,double);
-    chargerate =va_arg(ap,double);
+    temp =va_arg(ap,float);
+    chargerate =va_arg(ap,float);
     va_end(ap);
     call_Printf++;
 

@@ -72,8 +72,8 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
     print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
-    assert(printf_floatpar_data[BatteryParameter_Temparature] == 1.0);
-    assert(printf_floatpar_data[BatteryParameter_ChargeRate] == 2.0);
+    assert(printf_floatpar_data[BatteryParameter_Temparature] == 1.0f);
+    assert(printf_floatpar_data[BatteryParameter_ChargeRate] == 2.0f);
 }
 
 /**
