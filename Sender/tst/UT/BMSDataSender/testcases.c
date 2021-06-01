@@ -84,6 +84,11 @@ static void TC_EvaluateFilenameAndlocationofFile(void)
  *      temparature_3 chargerate_3
  *          ....
  *          ....
+ * This testcase will evaluate 
+ * 1. The way the data gets printed onto the console - "%f %f\n"
+ * 2. the first parameter that gets printed and second parameter that gets printed.
+ *    Temparature should be printed first
+ *    Chargerate should be printed second
  */ 
 static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
@@ -93,6 +98,7 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
     print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
+    assert(strcmp("%f %f\n",Printf_FormartString) == 0);
     assert(printf_floatpar_data[BatteryParameter_Temparature] == constants[BatteryParameter_Temparature]);
     assert(printf_floatpar_data[BatteryParameter_ChargeRate] == constants[BatteryParameter_ChargeRate]);
 }
@@ -103,7 +109,7 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
  * This allows us to send data on to console continously until user stops.
  * Temparature and chargerate are read together in a single read.
  * 
- * The data.txt file in this unittest is written in the following way
+ * The data.txt file for this unittest is written in the following way
  * 1.0 2.0
  * 3.0 4.0
  * 5.0 6.0
