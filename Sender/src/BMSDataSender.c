@@ -53,7 +53,6 @@ BMSDataTransmitter_t BMSDataTransmitter ={
 
 void BatteryMonitoringSystemTransmitter_Main(void)
 {
-    int assertcondition = 0;
     if(BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested == 1) 
     {
         assert(BMSDataTransmitter.TxControl.NumberofTransmissionAllowed > 0);
