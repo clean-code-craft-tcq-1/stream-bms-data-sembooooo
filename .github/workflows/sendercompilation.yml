@@ -14,5 +14,7 @@ jobs:
     - name: build
       working-directory: ./Sender/src/
       run: gcc -DMAIN -Wall -Wextra -o testchecker *.c
+
     - name: run
+      working-directory: ./Sender/src/
       run: ./testchecker 
