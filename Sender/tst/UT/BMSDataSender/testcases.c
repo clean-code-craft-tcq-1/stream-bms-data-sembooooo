@@ -33,7 +33,7 @@ static void Environment_Initialization(void)
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed =0;
     print = &printf;
     Reset_all_print_mocks();
-    strcpy(filename,"data.txt");
+    strcpy(filename,"./data.txt");
 }
 
 /**
@@ -64,6 +64,8 @@ static void TC_EvaluateFilenameAndlocationofFile(void)
     BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1;
     BatteryMonitoringSystemTransmitter_Main();
+    printf("%d\n",strcmp("Problem with File opening\n",Printf_FormartString));
+    printf("%s",Printf_FormartString);
     assert(strcmp("Problem with File opening\n",Printf_FormartString)!=0);
 }
 

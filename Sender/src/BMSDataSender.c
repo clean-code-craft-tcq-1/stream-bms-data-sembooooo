@@ -4,7 +4,7 @@
 
 ///> Test double
 int (*print)(const char *format, ...) = &printf;
-char filename[10] = "data.txt";
+char filename[20] = "./data.txt";
 
 
 
