@@ -18,15 +18,15 @@ int print_Mock_FilenotfoundInstance(char *Par_s)
 
 // Lesson learnt : floatgets coverted into double when passed through va_args
 // controversy here
-int print_Mock_ForDataEvaluation(char *Par_s,double temp, double chargerate)
+int print_Mock_ForDataEvaluation(char *Par_s,...)
 {
-    /*
+    double temp;
+    double chargerate;
     va_list ap;
     va_start(ap,Par_s);
-    temp =(float) va_arg(ap,double);
-    chargerate =(float) va_arg(ap,double);
+    temp = va_arg(ap,double);
+    chargerate = va_arg(ap,double);
     va_end(ap);
-    */
     call_Printf++;
 
     strcpy(Printf_FormartString,Par_s);

@@ -10,6 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build
-      run: gcc -DMAIN -Wall -Wextra -o executer ./Sender/src/*.c
+      run: gcc -DMAIN -Wall -Wextra -o testchecker ./Sender/src/*.c
     - name: run
-      run: ./executer
+      run: ./testchecker 
