@@ -1,4 +1,4 @@
-name: Only compilation
+name: Build and run
 
 on: [push, pull_request]
 
@@ -10,4 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build
-      run: gcc -DMAIN -Wall -Wextra ./Sender/src/*.c
+      run: gcc -DMAIN -Wall -Wextra -o executer ./Sender/src/*.c
+    - name: execute
+      run: executer
