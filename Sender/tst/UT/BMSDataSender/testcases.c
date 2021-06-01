@@ -33,7 +33,7 @@ static void Environment_Initialization(void)
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed =0;
     print = &printf;
     Reset_all_print_mocks();
-    strcpy(filename,"./data.txt");
+    strcpy(filename,"./Sender/src/data.txt");
 }
 
 /**
@@ -64,8 +64,6 @@ static void TC_EvaluateFilenameAndlocationofFile(void)
     BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1;
     BatteryMonitoringSystemTransmitter_Main();
-    printf("%d\n",strcmp("Problem with File opening\n",Printf_FormartString));
-    printf("%s",Printf_FormartString);
     assert(strcmp("Problem with File opening\n",Printf_FormartString)!=0);
 }
 
@@ -89,6 +87,7 @@ static void TC_EvaluateFilenameAndlocationofFile(void)
  */ 
 static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
+    strcpy(filename,"./Sender/tst/UT/BMSDataSender/data.txt");
     double constants[BatteryParameter_TotalNumber] = {1.0,2.0};
     printf("TC_EvaluateParametersOrderPrintedOnConsole\n");
     print = &print_Mock_ForDataEvaluation;
@@ -114,12 +113,13 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
  */ 
 static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
 {
-    printf("TC_EvaluateIfFilereadingisIteratedatEOF\n");
     int index;
     double datasamples[4][2] ={ {1.0,2.0},
                                 {3.0,4.0},
                                 {5.0,6.0},
                                 {1.0,2.0}};
+    printf("TC_EvaluateIfFilereadingisIteratedatEOF\n");
+    strcpy(filename,"./Sender/tst/UT/BMSDataSender/data.txt");
     print = &print_Mocks_ForFileIterationInstance;
     numberofcallsToRequestStop = 4;
     BatteryMonitoringSystemTransmitter_Main();

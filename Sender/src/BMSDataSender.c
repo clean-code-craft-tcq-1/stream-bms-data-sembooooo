@@ -4,7 +4,7 @@
 
 ///> Test double
 int (*print)(const char *format, ...) = &printf;
-char filename[20] = "./data.txt";
+char filename[100] = "./Sender/src/data.txt";
 
 
 
