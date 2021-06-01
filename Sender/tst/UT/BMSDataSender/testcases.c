@@ -76,10 +76,12 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
     printf("%f %f\n",printf_floatpar_data[BatteryParameter_Temparature],printf_floatpar_data[BatteryParameter_ChargeRate]);
-    condition = ((printf_floatpar_data[BatteryParameter_Temparature] < (constants[BatteryParameter_Temparature]+epsilon) &&
-                (printf_floatpar_data[BatteryParameter_Temparature] > (constants[BatteryParameter_Temparature] - epsilon));
+    condition = ((printf_floatpar_data[BatteryParameter_Temparature] < (constants[BatteryParameter_Temparature]+epsilon)) &&
+                (printf_floatpar_data[BatteryParameter_Temparature] > (constants[BatteryParameter_Temparature] - epsilon)));
     assert(condition);
-    assert(printf_floatpar_data[BatteryParameter_ChargeRate] < constants[BatteryParameter_ChargeRate]);
+    condition = ((printf_floatpar_data[BatteryParameter_ChargeRate] < (constants[BatteryParameter_ChargeRate]+epsilon)) &&
+                (printf_floatpar_data[BatteryParameter_ChargeRate] > (constants[BatteryParameter_ChargeRate] - epsilon)));
+    assert(condition);
 }
 
 /**
