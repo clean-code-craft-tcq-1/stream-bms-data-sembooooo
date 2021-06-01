@@ -3,8 +3,7 @@
 #include "BMSDataSender.h"
 
 ///> Test double
-int (*print_string)(const char *format) = &printf;
-int (*print_values)(const char *format, float temp, float chargerate) = &printf;
+int (*print)(const char *format, ...) = &printf;
 char filename[10] = "data.txt";
 
 
@@ -27,7 +26,7 @@ void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
     FILE *fptr = fopen(filename,"r");   
     if(fptr == NULL)
     {
-        print_string("Problem with File opening\n");   
+        print("Problem with File opening\n");   
         return; 
     }
     while(TxControlPtr->isTxStopRequested == 0)
@@ -39,7 +38,7 @@ void TransmitDataFromFileToConsole(BMSDataTxControl_t * TxControlPtr)
             }
             else
             {
-                print_values("%f %f\n",ParameterData[BatteryParameter_Temparature],ParameterData[BatteryParameter_ChargeRate]);
+                print("%f %f\n",ParameterData[BatteryParameter_Temparature],ParameterData[BatteryParameter_ChargeRate]);
                CalculateIsTxStopRequested(TxControlPtr);
             }
 

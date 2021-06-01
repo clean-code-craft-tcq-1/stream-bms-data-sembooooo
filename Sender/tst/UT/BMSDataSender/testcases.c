@@ -31,8 +31,7 @@ static void Environment_Initialization(void)
     BMSDataTransmitter.TxControl.isTxStopRequested =0;
     BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested =0;
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed =0;
-    print_values = &printf;
-    print_string = &printf;
+    print = &printf;
     Reset_all_print_mocks();
     strcpy(filename,"data.txt");
 }
@@ -46,7 +45,7 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
 {
     strcpy(filename,"dat.txt");
     printf("TC_ProcessShouldExitIfFileNotFound\n");
-    print_string = &print_Mock_FilenotfoundInstance;
+    print = &print_Mock_FilenotfoundInstance;
     BatteryMonitoringSystemTransmitter_Main();
     assert(strcmp("Problem with File opening\n",Printf_FormartString)==0);
 }
@@ -70,7 +69,7 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
 static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
     printf("TC_EvaluateParametersOrderPrintedOnConsole\n");
-    print_values = &print_Mock_ForDataEvaluation;
+    print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
     printf("%f %f\n",printf_floatpar_data[BatteryParameter_Temparature],printf_floatpar_data[BatteryParameter_ChargeRate]);
@@ -100,7 +99,7 @@ static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
                                 {3.0,4.0},
                                 {5.0,6.0},
                                 {1.0,2.0}};
-    print_values = &print_Mocks_ForFileIterationInstance;
+    print = &print_Mocks_ForFileIterationInstance;
     numberofcallsToRequestStop = 4;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 4);
@@ -116,8 +115,7 @@ static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
 static void TC_EvaluateIfPrintfIsAssigned(void)
 {
     printf("TC_EvaluateIfPrintfIsAssigned\n");
-    assert(print_values = &printf);
-    assert(print_string = &printf);
+    assert(print == &printf);
 }
 
 
@@ -133,7 +131,7 @@ static void TC_EvaluateIfTransmissionStopsAfterN(void)
     printf("TC_EvaluateIfTransmissionStopsAfterN\n");
     BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1000;
-    print_values = &print_Mocks_ForNtransmissionsScenario;
+    print = &print_Mocks_ForNtransmissionsScenario;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1000);   
 }
@@ -151,7 +149,7 @@ static void TC_EvaluateIfTransmissionDoesntStopAfterN(void)
     BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 0;
     BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1000;
     numberofcallsToRequestStop = 2000;
-    print_values = &print_Mocks_ForNtransmissionsScenario;
+    print = &print_Mocks_ForNtransmissionsScenario;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf > 1000);
     assert(call_Printf == 2000);   
@@ -170,7 +168,7 @@ TC_EvaluateIfPrintfIsAssigned();
 Environment_Initialization(); 
 TC_EvaluateParametersOrderPrintedOnConsole(); 
 Environment_Initialization(); 
-//TC_EvaluateIfFilereadingisIteratedatEOF(); 
+TC_EvaluateIfFilereadingisIteratedatEOF(); 
 Environment_Initialization(); 
 TC_EvaluateIfTransmissionStopsAfterN();
 Environment_Initialization(); 
