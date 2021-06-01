@@ -9,14 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Change Directory
-      run: cd ./Sender/src/
-    
-    - name: pwd
-      run: pwd
+   
 
     - name: build
+      working-directory: ./Sender/src/
       run: gcc -DMAIN -Wall -Wextra -o testchecker *.c
     - name: run
       run: ./testchecker 
