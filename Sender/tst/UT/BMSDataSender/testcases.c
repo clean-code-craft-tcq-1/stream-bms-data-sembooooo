@@ -68,13 +68,14 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
  */ 
 static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
+    double constants[BatteryParameter_TotalNumber] = {1.0,2.0};
     printf("TC_EvaluateParametersOrderPrintedOnConsole\n");
     print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
     printf("%f %f\n",printf_floatpar_data[BatteryParameter_Temparature],printf_floatpar_data[BatteryParameter_ChargeRate]);
-    assert(printf_floatpar_data[BatteryParameter_Temparature] == 1.0f);
-    assert(printf_floatpar_data[BatteryParameter_ChargeRate] == 2.0f);
+    assert(printf_floatpar_data[BatteryParameter_Temparature] == constants[0]);
+    assert(printf_floatpar_data[BatteryParameter_ChargeRate] == constants[1]);
 }
 
 /**
@@ -95,7 +96,7 @@ static void TC_EvaluateIfFilereadingisIteratedatEOF(void)
 {
     printf("TC_EvaluateIfFilereadingisIteratedatEOF\n");
     int index;
-    float datasamples[4][2] ={ {1.0,2.0},
+    double datasamples[4][2] ={ {1.0,2.0},
                                 {3.0,4.0},
                                 {5.0,6.0},
                                 {1.0,2.0}};

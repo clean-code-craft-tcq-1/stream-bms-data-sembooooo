@@ -6,8 +6,8 @@
 
 char Printf_FormartString[100];
 int call_Printf;
-float printf_floatpar_data[2];
-float printf_floatpar_AlldataSamples[4][2];
+double printf_floatpar_data[2];
+double printf_floatpar_AlldataSamples[4][2];
 int numberofcallsToRequestStop;
 
 int print_Mock_FilenotfoundInstance(char *Par_s)
@@ -16,9 +16,9 @@ int print_Mock_FilenotfoundInstance(char *Par_s)
     return 0;
 }
 
-// Lesson learnt : float gets coverted into double when passed through va_args
+// Lesson learnt : floatgets coverted into double when passed through va_args
 // controversy here
-int print_Mock_ForDataEvaluation(char *Par_s,float temp, float chargerate)
+int print_Mock_ForDataEvaluation(char *Par_s,double temp, double chargerate)
 {
     /*
     va_list ap;
@@ -36,7 +36,7 @@ int print_Mock_ForDataEvaluation(char *Par_s,float temp, float chargerate)
     return 0;
 }
 
-int print_Mocks_ForFileIterationInstance(char *Par_s, float temp,float chargerate)
+int print_Mocks_ForFileIterationInstance(char *Par_s, double temp,double chargerate)
 {
     static int index =0;
     call_Printf++;
@@ -49,7 +49,7 @@ int print_Mocks_ForFileIterationInstance(char *Par_s, float temp,float chargerat
     return 0;
 }
 
-int print_Mocks_ForNtransmissionsScenario(char *Par_s,float temp, float chargerate)
+int print_Mocks_ForNtransmissionsScenario(char *Par_s,double temp, double chargerate)
 {
     call_Printf++;
     
