@@ -69,13 +69,17 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
 static void TC_EvaluateParametersOrderPrintedOnConsole(void)
 {
     double constants[BatteryParameter_TotalNumber] = {1.0,2.0};
+    double epsilon = 0.0001;
+    int condition;
     printf("TC_EvaluateParametersOrderPrintedOnConsole\n");
     print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
     printf("%f %f\n",printf_floatpar_data[BatteryParameter_Temparature],printf_floatpar_data[BatteryParameter_ChargeRate]);
-    assert(printf_floatpar_data[BatteryParameter_Temparature] == constants[0]);
-    assert(printf_floatpar_data[BatteryParameter_ChargeRate] == constants[1]);
+    condition = ((printf_floatpar_data[BatteryParameter_Temparature] < (constants[BatteryParameter_Temparature]+epsilon) &&
+                (printf_floatpar_data[BatteryParameter_Temparature] > (constants[BatteryParameter_Temparature] - epsilon));
+    assert(condition);
+    assert(printf_floatpar_data[BatteryParameter_ChargeRate] < constants[BatteryParameter_ChargeRate]);
 }
 
 /**
