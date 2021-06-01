@@ -22,8 +22,8 @@ int print_Mock_ForDataEvaluation(char *Par_s,...)
     float temp, chargerate;
     va_list ap;
     va_start(ap,Par_s);
-    temp =va_arg(ap,float);
-    chargerate =va_arg(ap,float);
+    temp =(float) va_arg(ap,double);
+    chargerate =(float) va_arg(ap,double);
     va_end(ap);
     call_Printf++;
 
