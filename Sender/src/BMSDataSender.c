@@ -2,6 +2,13 @@
 #include <assert.h>
 #include "BMSDataSender.h"
 
+/**
+ * I have tried to explain the feature in testcases
+ * So go through testcases instead of source.
+ */ 
+
+
+
 ///> Test double
 int (*print)(const char *format, ...) = &printf;
 char filename[100] = "./Sender/src/data.txt";
