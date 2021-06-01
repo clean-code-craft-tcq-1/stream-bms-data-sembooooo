@@ -12,6 +12,10 @@ jobs:
 
     - name: Change Directory
       run: cd ./Sender/src/
+    
+    - name: pwd
+      run: pwd
+
     - name: build
       run: gcc -DMAIN -Wall -Wextra -o testchecker *.c
     - name: run
