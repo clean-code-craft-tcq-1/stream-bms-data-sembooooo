@@ -50,6 +50,25 @@ static void TC_ProcessShouldExitIfFileNotFound(void)
     assert(strcmp("Problem with File opening\n",Printf_FormartString)==0);
 }
 
+/**
+ * If the file present in the folder but unable to fetch it then
+ * testcase should fail.
+ * This checks if the file name is set to proper value or not
+ * This is a negative testcase
+ */  
+
+static void TC_EvaluateFilenameAndlocationofFile(void)
+{
+    printf("TC_EvaluateFilenameAndlocationofFile\n");
+    print = &print_Mock_FilenotfoundInstance;
+    BMSDataTransmitter.TxControl.isStopAfterNTransmissionRequested = 1;
+    BMSDataTransmitter.TxControl.NumberofTransmissionAllowed = 1;
+    BatteryMonitoringSystemTransmitter_Main();
+    assert(strcmp("Problem with File opening\n",Printf_FormartString)!=0);
+}
+
+
+
 
 /**
  * The data is stored in the following order in the file
@@ -73,7 +92,6 @@ static void TC_EvaluateParametersOrderPrintedOnConsole(void)
     print = &print_Mock_ForDataEvaluation;
     BatteryMonitoringSystemTransmitter_Main();
     assert(call_Printf == 1);
-    printf("%f %f\n",printf_floatpar_data[BatteryParameter_Temparature],printf_floatpar_data[BatteryParameter_ChargeRate]);
     assert(printf_floatpar_data[BatteryParameter_Temparature] == constants[BatteryParameter_Temparature]);
     assert(printf_floatpar_data[BatteryParameter_ChargeRate] == constants[BatteryParameter_ChargeRate]);
 }
@@ -164,6 +182,8 @@ printf("****Test Execution Started***********\n");
 printf("*************************************\n");
 Environment_Initialization(); 
 TC_ProcessShouldExitIfFileNotFound(); 
+Environment_Initialization(); 
+TC_EvaluateFilenameAndlocationofFile();
 Environment_Initialization(); 
 TC_EvaluateIfPrintfIsAssigned();
 Environment_Initialization(); 

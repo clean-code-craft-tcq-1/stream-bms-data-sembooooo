@@ -16,15 +16,13 @@ jobs:
         sudo apt-get install -y gcovr
     - name: build
       working-directory: ./Sender/tst/UT/BMSDataSender/
-      run: gcc -Wall -Wextra -fprofile-arcs -ftest-coverage -o testchecker *.c
+      run: gcc -Wall -Wextra -fprofile-arcs -ftest-coverage -o ../../../testchecker *.c
       
     - name: run
-      working-directory: ./Sender/tst/UT/BMSDataSender/
       run: ./testchecker
 
     - name: collect coverage
-      working-directory: ./Sender/tst/UT/BMSDataSender/
-      run: gcovr --gcov-exclude=".*test.*" -r . --html --html-details -o coverage.html
+      run: gcovr --gcov-exclude=".*test.*" -r ./Sender/src/ --html --html-details -o coverage.html
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
