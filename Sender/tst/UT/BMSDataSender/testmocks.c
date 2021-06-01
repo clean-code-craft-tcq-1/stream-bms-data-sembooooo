@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "Mocks.h"
+#include "testmocks.h"
 
 char Printf_FormartString[100];
 int call_Printf;

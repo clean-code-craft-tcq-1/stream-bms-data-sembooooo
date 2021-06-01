@@ -9,7 +9,7 @@
 #include "../../../src/BMSDataSender.c"             /** Unit which sends the data */
 #include <assert.h>                                 /* My unit test frame work */
 #include <string.h>
-#include "Mocks.h"
+#include "testmocks.h"
 
 
 /**
