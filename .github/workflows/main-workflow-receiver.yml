@@ -24,6 +24,7 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings.
           flake8 . --count --exit-zero --max-line-length=80 --ignore=E111,E121,E126 --statistics
-          
+      - name: build
+        run: gcc -DMAIN -Wall -Wextra -o SenderExec ./Sender/src/*.c
       - name: Pipe run
-        run: ./Sender | python ./Receiver/receiver_main.py
+        run: ./SenderExec | python ./Receiver/receiver_main.py
