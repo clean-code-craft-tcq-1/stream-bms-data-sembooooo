@@ -26,4 +26,4 @@ jobs:
           flake8 . --count --exit-zero --max-line-length=80 --ignore=E111,E121,E126 --statistics
           
       - name: Pipe run
-        run: ./Sender | python receiver_main.py
+        run: ./Sender | ./Receiver python receiver_main.py
