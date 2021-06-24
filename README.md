@@ -2,7 +2,8 @@
 
 This project is about sending and receiving BMS data.
 
-## Decomposition
+## Decomposition 
+
 
 At a top level, the program runs in two processes - the sender and the receiver.
 
@@ -71,4 +72,4 @@ This section lists the minimum functionality of the Sender and Receiver.
 
 ## Quality Parameters
 
-Setup the quality parameters of your project (duplication, complexity, coverage, warnings) using the GitHub workflow yml files.
+Setup the quality parameters of your project (duplication, complexity, coverage, warnings) using the GitHub workflow yml files.   
